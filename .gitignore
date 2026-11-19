@@ -34,3 +34,6 @@ id_ed25519
 **/dist/
 **/build/
 .DS_Store
+
+# Raw evidence screenshots — keep private
+Evidence/
