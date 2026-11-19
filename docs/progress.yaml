@@ -8,7 +8,7 @@ current:
   step: 5
   goal: "Pull image 7ded466 on EC2 and confirm it starts (exec format check)"
   source_sha: 7ded466
-  docs: DOC_READY_PUBLISH_BLOCKED   # docs branch prepared; GitHub write access and owner sign-off pending
+  docs: PR_OPEN   # https://github.com/iam-trongkhanh/orderflow-aws-devops/pull/1 ; portfolio page on khanhcloud.online not published yet
 aws:
   account_alias: orderflow-lab
   region: us-east-2
