@@ -1,0 +1,40 @@
+name: orderflow
+x-api: &api
+  image: orderflow:local
+  build: .
+  environment:
+    DATABASE_URL: postgres://orderflow:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/orderflow
+    LOG_LEVEL: ${LOG_LEVEL:-info}
+  init: true
+  networks: [backend]
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: orderflow
+      POSTGRES_DB: orderflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U orderflow -d orderflow']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  migrate:
+    <<: *api
+    command: [node, dist/migrate.js]
+    depends_on:
+      db: {condition: service_healthy}
+    restart: 'no'
+  api:
+    <<: *api
+    ports: ['127.0.0.1:8080:8080']
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    stop_grace_period: 15s
+    restart: 'no'
+volumes:
+  postgres_data:
+networks:
+  backend:
