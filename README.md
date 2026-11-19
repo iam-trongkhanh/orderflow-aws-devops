@@ -16,6 +16,7 @@ flowchart LR
 | What | Where |
 | --- | --- |
 | Step-by-step guide, Part 1: empty AWS account → verified infrastructure | [docs/tutorial/01-aws-foundation.md](docs/tutorial/01-aws-foundation.md) |
+| Part 2 (in progress): source code → image on ECR → container on EC2 | [docs/tutorial/02-image-to-ec2.md](docs/tutorial/02-image-to-ec2.md) |
 | Terraform (VPC, security groups, IAM, ECR, EC2, RDS, ACM, ALB, Cloudflare DNS) | [infra/terraform](infra/terraform) |
 | IAM policies and why each exists | [docs/iam-policies](docs/iam-policies/README.md) |
 | Incidents: real ones and the training bank | [docs/incidents/INDEX.md](docs/incidents/INDEX.md) |
