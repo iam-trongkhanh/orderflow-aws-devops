@@ -1,0 +1,68 @@
+# Machine-readable progress for OrderFlow. Update on every checkpoint; never delete past entries.
+# Status vocabulary: THEORY_LEARNED, PRACTICED, PLAN_PASS, APPLIED, VERIFIED_LOCAL, VERIFIED_AWS_EC2,
+# VERIFIED_EKS, RECOVERED_PASS, SELF_REPORTED, BLOCKED, EVIDENCE_MISSING, NOT_STARTED.
+updated_at: "2026-11-19T15:09:00+07:00"
+current:
+  phase: P1
+  checkpoint: M3-03
+  step: 5
+  goal: "Pull image 7ded466 on EC2 and confirm it starts (exec format check)"
+  source_sha: 7ded466
+  docs: PR_OPEN   # https://github.com/iam-trongkhanh/orderflow-aws-devops/pull/1 ; portfolio page on khanhcloud.online not published yet
+aws:
+  account_alias: orderflow-lab
+  region: us-east-2
+  resources_running_since: "2026-11-12"
+  billable: [EC2 t3.medium, EBS gp3 30GiB, RDS db.t4g.micro 20GiB, ALB, public IPv4, Secrets Manager secret]
+  actual_cost: NOT_RECORDED
+checkpoints:
+  - id: M3-03.4
+    at: "2026-11-19T15:09:00+07:00"
+    result: "linux/amd64 image pushed to ECR as orderflow-api:7ded466, index sha256:05c7fdefac776aa91b551ee0fb919f6aad6d564d89c81782730c2d81b14f15c6, image manifest sha256:e241cb2c4019e9572d62328d0111d12abb83522d739f45beb9af092772a70e74; first attempt failed because Docker Desktop was not running"
+    status: VERIFIED_AWS_EC2   # AWS ECR, EC2 track; architecture proven only when it runs on EC2
+    evidence: [EV-20261119-P1-10]
+  - id: M3-03.3
+    at: "2026-11-19T12:32:00+07:00"
+    result: "App source, Dockerfile, migrations, tests pushed; secret scan clean; Evidence/ ignored"
+    status: VERIFIED_PASS   # repository change, not tied to an environment
+    evidence: [EV-20261119-P1-08, EV-20261119-P1-09, git:7ded466, git:cc49d3a]
+  - id: M3-03.1
+    at: "2026-11-19T12:01:00+07:00"
+    result: "Docker installed on EC2, hello-world ran, 28G free on /"
+    status: VERIFIED_AWS_EC2
+    evidence: [EV-20261119-P1-07]
+  - id: SEC-MFA
+    at: "2026-11-19T10:36:00+07:00"
+    result: "Passkey MFA on orderflow-operator; root MFA reported by owner"
+    status: VERIFIED_AWS_EC2   # root MFA: SELF_REPORTED
+    evidence: [EV-20261119-P1-06]
+  - id: INC-03
+    at: "2026-11-19T10:17:00+07:00"
+    result: "Operator could not start SSM sessions; scoped policy added; port forwarding still denied"
+    status: RECOVERED_PASS
+    evidence: [EV-20261118-P1-06, EV-20261119-P1-01, EV-20261119-P1-03, EV-20261119-P1-04, EV-20261119-P1-05]
+  - id: M3-02
+    at: "2026-11-19T09:57:00+07:00"
+    result: "Shell on EC2 via Session Manager: ssm-user, x86_64, Amazon Linux 2023"
+    status: VERIFIED_AWS_EC2
+    evidence: [EV-20261119-P1-02]
+  - id: M3-01
+    at: "2026-11-18T21:02:00+07:00"
+    result: "RDS available, not public, secret active; EC2 running with profile; SSM Online"
+    status: VERIFIED_AWS_EC2
+    evidence: [EV-20261118-P1-01, EV-20261118-P1-02, EV-20261118-P1-03]
+  - id: M2-APPLY
+    at: "2026-11-12"
+    result: "40 Terraform resources created after INC-01 and INC-02"
+    status: APPLIED
+    evidence: [EVIDENCE_MISSING: original terminal output to backfill]
+  - id: APP-LOCAL
+    at: "2026-11-04"
+    result: "Compose healthy, /healthz and /readyz 200, metrics exposed"
+    status: VERIFIED_LOCAL
+    evidence: [VERIFICATION.md]
+next:
+  - "M3-03.5: pull orderflow-api:7ded466 on EC2 and confirm it starts"
+  - "EC2 role reads exactly one secret; separate least-privilege DB user for the app"
+  - "Run migrations, start API, /healthz and /readyz 200"
+  - "Target group healthy; create and read an order over HTTPS through the ALB"

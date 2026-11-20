@@ -1,6 +1,31 @@
 # OrderFlow — CLOUD-PROD-001
 
-A small PostgreSQL-backed order API for DevOps/SRE training. Node.js 26 LTS, strict TypeScript, Fastify, pg pooling, Pino JSON logs, and Prometheus metrics. No cloud resources are provisioned.
+An end-to-end DevOps project: a small order API taken from a laptop to AWS, then to Kubernetes and EKS, with real incidents, monitoring and costs recorded along the way. Every status below is backed by command output; nothing is claimed as running until it has been checked.
+
+**Status, 2026-11-19:** phase P1 of the P0–P12 roadmap. The AWS infrastructure (40 Terraform resources) is up and verified; the API is not deployed on AWS yet.
+
+```mermaid
+flowchart LR
+  User -->|HTTPS 443, one allowed IP| ALB[Application Load Balancer + ACM]
+  ALB -->|HTTP 8080| EC2[EC2 t3.medium, Docker]
+  EC2 -->|5432| RDS[(RDS PostgreSQL 17, private)]
+  EC2 -.->|outbound 443| AWS[SSM, ECR, Secrets Manager]
+  Operator -.->|Session Manager, no SSH| AWS
+```
+
+| What | Where |
+| --- | --- |
+| Step-by-step guide, Part 1: empty AWS account → verified infrastructure | [docs/tutorial/01-aws-foundation.md](docs/tutorial/01-aws-foundation.md) |
+| Part 2 (in progress): source code → image on ECR → container on EC2 | [docs/tutorial/02-image-to-ec2.md](docs/tutorial/02-image-to-ec2.md) |
+| Terraform (VPC, security groups, IAM, ECR, EC2, RDS, ACM, ALB, Cloudflare DNS) | [infra/terraform](infra/terraform) |
+| IAM policies and why each exists | [docs/iam-policies](docs/iam-policies/README.md) |
+| Incidents: real ones and the training bank | [docs/incidents/INDEX.md](docs/incidents/INDEX.md) |
+| Progress and evidence | [docs/learning/PROGRESS_LEDGER.md](docs/learning/PROGRESS_LEDGER.md) |
+| Costs | [docs/finops/COST_LEDGER.md](docs/finops/COST_LEDGER.md) |
+
+## Application
+
+A small PostgreSQL-backed order API. Node.js 26 LTS, strict TypeScript, Fastify, pg pooling, Pino JSON logs, and Prometheus metrics. Application code was written with an AI coding assistant; the infrastructure, deployment and operations work is the focus of this project.
 
 ```mermaid
 flowchart LR

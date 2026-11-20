@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "StartShellOnOrderflowEc2Only",
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+      "Resource": [
+        "arn:aws:ec2:us-east-2:<ACCOUNT_ID>:instance/<INSTANCE_ID>",
+        "arn:aws:ssm:us-east-2:<ACCOUNT_ID>:document/SSM-SessionManagerRunShell"
+      ]
+    },
+    {
+      "Sid": "OwnSessionsOnly",
+      "Effect": "Allow",
+      "Action": ["ssm:TerminateSession", "ssm:ResumeSession", "ssmmessages:OpenDataChannel"],
+      "Resource": "arn:aws:ssm:*:*:session/*",
+      "Condition": {
+        "StringEquals": { "ssm:resourceTag/aws:ssmmessages:session-id": "${aws:userid}" }
+      }
+    }
+  ]
+}
