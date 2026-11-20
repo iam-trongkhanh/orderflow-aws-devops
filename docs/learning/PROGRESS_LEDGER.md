@@ -4,6 +4,7 @@ Current stage: **P1 — OrderFlow on EC2**, checkpoint M3-03. Statuses only chan
 
 | Date | Checkpoint | Result | Status | Evidence |
 | --- | --- | --- | --- | --- |
+| 2026-11-20 10:14 | M3-03 step 5 | EC2 pulled `orderflow-api:7ded466` with its instance role; `linux/amd64`; `node --version` = `v26.13.0` | `VERIFIED_AWS_EC2` | `20261120-1014_M3-03_ec2-pull.png` |
 | 2026-11-19 15:09 | M3-03 step 4 | `linux/amd64` image pushed to ECR as `orderflow-api:7ded466` (index `sha256:05c7fdef…`); first try failed because Docker Desktop was off | `VERIFIED_AWS_EC2` | `20261119-1509_M3-03_ecr-push.png` |
 | 2026-11-19 12:32 | M3-03 step 3 | App source, Dockerfile, migrations and tests pushed (`7ded466`); secret scan clean, `Evidence/` ignored (`cc49d3a`) | `VERIFIED_PASS` | git log, scan output |
 | 2026-11-19 12:01 | M3-03 step 1 | Docker installed on EC2, `hello-world` ran, 28G free on `/` | `VERIFIED_AWS_EC2` | `20261119-1201_M3-03_docker-install.png` |
@@ -16,7 +17,7 @@ Current stage: **P1 — OrderFlow on EC2**, checkpoint M3-03. Statuses only chan
 
 ## Next
 
-1. Pull `orderflow-api:7ded466` on EC2 and confirm it starts.
+1. Database user for the app with least privilege; decide where its password lives.
 2. EC2 role reads exactly one secret; separate least-privilege DB user for the app.
 3. Run migrations, start the API, `/healthz` and `/readyz` 200.
 4. Target group healthy; create and read an order over HTTPS through the ALB.

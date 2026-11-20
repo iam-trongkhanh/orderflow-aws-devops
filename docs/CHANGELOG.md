@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-20
+
+- Part 2, section 2: pull the image on EC2 with the instance role and check the CPU architecture.
+
 ## 2026-11-19
 
 - Part 2 started: build and push the `linux/amd64` image to ECR (`orderflow-api:7ded466`).

@@ -23,6 +23,7 @@ Evidence ID: `EV-YYYYMMDD-<phase>-<n>`. File name: `YYYYMMDD-HHMM_<checkpoint>_<
 | EV-20261119-P1-08 | `20261119-1232_M3-03_secret-scan.png` | Case-insensitive secret scan: placeholders only | — | ACTUAL_CAPTURE | No |
 | EV-20261119-P1-09 | `20261119-1232_M3-03_git-push.png` | Push `ea4196f..7ded466`, commits `cc49d3a`, `7ded466` | — | ACTUAL_CAPTURE | No |
 | EV-20261119-P1-10 | `20261119-1509_M3-03_ecr-push.png` | Docker engine error, then build 112 s, push, tag `7ded466` with index and image digests | Account ID | ACTUAL_CAPTURE | No |
+| EV-20261120-P1-01 | `20261120-1014_M3-03_ec2-pull.png` | ECR login with the instance role, pull with the same index digest, `linux/amd64`, `v26.13.0` | Account ID, instance ID | ACTUAL_CAPTURE | No |
 | EV-20261112-P1-01 | Terraform apply output, 2026-11-12 | 39 resources, then RDS `Creation complete after 7m30s` | Account ID | NOT_CAPTURED | No |
 
 Still capturable while resources exist: policy page (JSON and Tags tabs), exported `OrderFlowTerraformDeployPolicy`, original Terraform output from the chat history of 2026-11-12.

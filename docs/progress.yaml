@@ -1,12 +1,12 @@
 # Machine-readable progress for OrderFlow. Update on every checkpoint; never delete past entries.
 # Status vocabulary: THEORY_LEARNED, PRACTICED, PLAN_PASS, APPLIED, VERIFIED_LOCAL, VERIFIED_AWS_EC2,
 # VERIFIED_EKS, RECOVERED_PASS, SELF_REPORTED, BLOCKED, EVIDENCE_MISSING, NOT_STARTED.
-updated_at: "2026-11-19T15:09:00+07:00"
+updated_at: "2026-11-20T10:14:00+07:00"
 current:
   phase: P1
   checkpoint: M3-03
-  step: 5
-  goal: "Pull image 7ded466 on EC2 and confirm it starts (exec format check)"
+  step: 6
+  goal: "Least-privilege database user for the app; decide where its password lives"
   source_sha: 7ded466
   docs: PR_OPEN   # https://github.com/iam-trongkhanh/orderflow-aws-devops/pull/1 ; portfolio page on khanhcloud.online not published yet
 aws:
@@ -16,6 +16,11 @@ aws:
   billable: [EC2 t3.medium, EBS gp3 30GiB, RDS db.t4g.micro 20GiB, ALB, public IPv4, Secrets Manager secret]
   actual_cost: NOT_RECORDED
 checkpoints:
+  - id: M3-03.5
+    at: "2026-11-20T10:14:00+07:00"
+    result: "EC2 pulled orderflow-api:7ded466 with its instance role (digest sha256:05c7fdef...), image is linux/amd64, node --version prints v26.13.0"
+    status: VERIFIED_AWS_EC2
+    evidence: [EV-20261120-P1-01]
   - id: M3-03.4
     at: "2026-11-19T15:09:00+07:00"
     result: "linux/amd64 image pushed to ECR as orderflow-api:7ded466, index sha256:05c7fdefac776aa91b551ee0fb919f6aad6d564d89c81782730c2d81b14f15c6, image manifest sha256:e241cb2c4019e9572d62328d0111d12abb83522d739f45beb9af092772a70e74; first attempt failed because Docker Desktop was not running"
@@ -62,7 +67,7 @@ checkpoints:
     status: VERIFIED_LOCAL
     evidence: [VERIFICATION.md]
 next:
-  - "M3-03.5: pull orderflow-api:7ded466 on EC2 and confirm it starts"
+  - "M3-03.6: app database user with least privilege; password storage decided and approved"
   - "EC2 role reads exactly one secret; separate least-privilege DB user for the app"
   - "Run migrations, start API, /healthz and /readyz 200"
   - "Target group healthy; create and read an order over HTTPS through the ALB"
