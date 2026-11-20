@@ -91,7 +91,7 @@ Not done yet.
 
 | You see | Cause | Do |
 | --- | --- | --- |
-| `no basic auth credentials` on `docker pull` | Docker on the server is not logged in to ECR, or the token is older than 12 hours | Run the `get-login-password | sudo docker login` line again |
+| `no basic auth credentials` on `docker pull` | Docker on the server is not logged in to ECR, or the token is older than 12 hours | Run the ECR login line again |
 | `AccessDeniedException ... ecr:GetAuthorizationToken` on the server | The instance role lost its ECR policy | Check `iam.tf` and the role's attached policies |
 | `failed to connect to the docker API at unix:///Users/<you>/.docker/run/docker.sock` | Docker Desktop is not running | Open Docker Desktop, wait for *Engine running*, run the build again |
 | `Login Succeeded`, then the error above | Login only talks to ECR; building needs the local engine | Same as above |
